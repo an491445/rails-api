@@ -53,7 +53,6 @@ class Search
   end
 
   def nokogiri_doc(url)
-    require 'open-uri'
     Nokogiri::HTML(open(url))
   end
 end
