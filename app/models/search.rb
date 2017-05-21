@@ -1,5 +1,5 @@
 class Search
-  attr_reader :name, :org_number, :revenue, :registration_year, :phone, :address
+  attr_reader :name, :organisation_number, :revenue, :registration_year, :phone, :address
 
   def initialize(search_term)
     @search_term = search_term
@@ -9,6 +9,7 @@ class Search
   def as_json
     {
       name: @name,
+      organisation_number: @organisation_number,
       revenue: @revenue,
       registration_year: @registration_year,
       phone: @phone,
@@ -19,21 +20,23 @@ class Search
   private
 
   def search_for_company
+    # Encode search term
+    search_term_encoded = URI.encode(@search_term)
     # Search on allabolag.se with the given search term
-    doc = nokogiri_doc("http://www.allabolag.se/what/#{@search_term}")
+    doc = nokogiri_doc("http://www.allabolag.se/what/#{search_term_encoded}")
     # First search result
     search_result = doc.css('.search-results__item__details').first
     # If there was a match
     if search_result
       # Get the organisation number
-      @org = search_result.css('dd').first.text
+      @organisation_number = search_result.css('dd').first.text
       get_company_info
     end
   end
 
   def get_company_info
     # Get detailed information about the company
-    company_doc = nokogiri_doc("http://www.allabolag.se/#{@org.gsub "-", ""}")
+    company_doc = nokogiri_doc("http://www.allabolag.se/#{@organisation_number.gsub "-", ""}")
     # Company name
     @name = get_attribute(company_doc, '.p-name')
     # Last year's revenue
