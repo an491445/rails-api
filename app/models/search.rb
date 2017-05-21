@@ -40,14 +40,13 @@ class Search
     # Company name
     @name = get_attribute(company_doc, '.p-name')
     # Last year's revenue
-    @revenue = company_doc.css('*:contains("Omsättning") + *')
-    @revenue = @revenue.empty? ? "not available" : @revenue.first.text.strip + " 000 SEK"
+    @revenue = get_attribute(company_doc, '*:contains("Omsättning") + *')
     # Registration year
     @registration_year = get_attribute(company_doc, 'dt:contains("Registreringsår") + dd')
     # Phone number
     @phone = get_attribute(company_doc, '.p-tel')
     # Address
-    @address = company_doc.css('.p-postal-code').first.parent.text.gsub("\n", "")
+    @address = get_attribute(company_doc, '*:contains("Besöksadress") + * *:first-child')
   end
 
   def get_attribute(company_doc, css_selector)
