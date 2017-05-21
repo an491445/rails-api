@@ -1,0 +1,17 @@
+<h1>Search for company</h1>
+<%= form_tag("", method: "get") do %>
+  <%= label_tag(:search, "Search word:") %>
+  <%= text_field_tag(:search) %>
+  <%= submit_tag("Search") %>
+<% end %>
+
+<% if @search_term.present? && @search_result %>
+  <p><%= @message %></p>
+  <h2><%= @search_result.name %></h2>
+  <ul>
+    <li>Registered: <%= @search_result.registration_year %></li>
+    <li>Revenue last year: <%= @search_result.revenue %></li>
+    <li>Phone number: <%= @search_result.phone %></li>
+    <li>Address: <%= @search_result.address %></li>
+  </ul>
+<% end %>

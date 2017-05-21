@@ -1,3 +1,4 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  root 'searches#display'
+  get 'api/v1', to: 'api/v1/api#search', defaults: { format: :json }
 end
